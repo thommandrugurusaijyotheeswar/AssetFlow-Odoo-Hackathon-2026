@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, request
-from .models import Employee
+from .models import Employee, Asset
 from . import db
 
 main = Blueprint("main", __name__)
@@ -57,3 +57,34 @@ def add_employee():
         return redirect("/employees")
 
     return render_template("add_employee.html")
+
+@main.route("/assets")
+def assets():
+
+    assets = Asset.query.all()
+
+    return render_template(
+        "assets.html",
+        assets=assets
+    )
+
+
+@main.route("/add_asset", methods=["GET", "POST"])
+def add_asset():
+
+    if request.method == "POST":
+
+        asset = Asset(
+            asset_id=request.form["asset_id"],
+            asset_name=request.form["asset_name"],
+            category=request.form["category"],
+            purchase_date=request.form["purchase_date"],
+            status="Available"
+        )
+
+        db.session.add(asset)
+        db.session.commit()
+
+        return redirect("/assets")
+
+    return render_template("add_asset.html")
