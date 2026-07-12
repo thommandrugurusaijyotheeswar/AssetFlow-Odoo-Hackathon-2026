@@ -154,3 +154,32 @@ def delete_asset(id):
     db.session.commit()
 
     return redirect("/assets")
+@main.route("/edit_employee/<int:id>", methods=["GET", "POST"])
+def edit_employee(id):
+
+    employee = Employee.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        employee.emp_id = request.form["emp_id"]
+        employee.name = request.form["name"]
+        employee.department = request.form["department"]
+        employee.email = request.form["email"]
+
+        db.session.commit()
+
+        return redirect("/employees")
+
+    return render_template("edit_employee.html", employee=employee)
+
+
+@main.route("/delete_employee/<int:id>")
+def delete_employee(id):
+
+    employee = Employee.query.get_or_404(id)
+
+    db.session.delete(employee)
+
+    db.session.commit()
+
+    return redirect("/employees")
