@@ -20,7 +20,22 @@ def login_redirect():
 
 @main.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+
+    total_employees = Employee.query.count()
+
+    total_assets = Asset.query.count()
+
+    available_assets = Asset.query.filter_by(status="Available").count()
+
+    assigned_assets = Asset.query.filter_by(status="Assigned").count()
+
+    return render_template(
+        "dashboard.html",
+        total_employees=total_employees,
+        total_assets=total_assets,
+        available_assets=available_assets,
+        assigned_assets=assigned_assets
+    )
 
 
 # ---------------- Employees ----------------
@@ -109,3 +124,33 @@ def assign_asset(id):
         asset=asset,
         employees=employees
     )
+@main.route("/edit_asset/<int:id>", methods=["GET", "POST"])
+def edit_asset(id):
+
+    asset = Asset.query.get_or_404(id)
+
+    if request.method == "POST":
+
+        asset.asset_id = request.form["asset_id"]
+        asset.asset_name = request.form["asset_name"]
+        asset.category = request.form["category"]
+        asset.purchase_date = request.form["purchase_date"]
+
+        db.session.commit()
+
+        return redirect("/assets")
+
+    return render_template(
+        "edit_asset.html",
+        asset=asset
+    )
+@main.route("/delete_asset/<int:id>")
+def delete_asset(id):
+
+    asset = Asset.query.get_or_404(id)
+
+    db.session.delete(asset)
+
+    db.session.commit()
+
+    return redirect("/assets")

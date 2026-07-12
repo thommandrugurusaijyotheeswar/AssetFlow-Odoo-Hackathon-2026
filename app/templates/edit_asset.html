@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Edit Asset</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+
+<div class="card shadow p-4">
+
+<h2>Edit Asset</h2>
+
+<form method="POST">
+
+<div class="mb-3">
+<label>Asset ID</label>
+<input
+type="text"
+name="asset_id"
+class="form-control"
+value="{{ asset.asset_id }}"
+required>
+</div>
+
+<div class="mb-3">
+<label>Asset Name</label>
+<input
+type="text"
+name="asset_name"
+class="form-control"
+value="{{ asset.asset_name }}"
+required>
+</div>
+
+<div class="mb-3">
+<label>Category</label>
+
+<input
+type="text"
+name="category"
+class="form-control"
+value="{{ asset.category }}"
+required>
+
+</div>
+
+<div class="mb-3">
+<label>Purchase Date</label>
+
+<input
+type="date"
+name="purchase_date"
+class="form-control"
+value="{{ asset.purchase_date }}">
+
+</div>
+
+<button class="btn btn-success">
+Update Asset
+</button>
+
+<a href="/assets" class="btn btn-secondary">
+Cancel
+</a>
+
+</form>
+
+</div>
+
+</div>
+
+</body>
+</html>
