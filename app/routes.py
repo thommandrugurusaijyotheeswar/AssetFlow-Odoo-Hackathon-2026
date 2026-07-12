@@ -15,9 +15,21 @@ def login():
     return render_template("index.html")
 
 
-@main.route("/login")
+@main.route("/login", methods=["POST"])
 def login_redirect():
-    return redirect("/dashboard")
+
+    email = request.form["email"]
+    password = request.form["password"]
+
+    if email == "admin@gmail.com" and password == "Admin@123":
+
+        return redirect("/dashboard")
+
+    return """
+    <h2>Invalid Email or Password</h2>
+
+    <a href="/">Try Again</a>
+    """
 
 
 # ---------------- Dashboard ----------------
@@ -515,3 +527,25 @@ def audit_logs():
         "audit_logs.html",
         logs=logs
     )
+
+
+@main.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+
+        return f"""
+        <h2>Password Reset Request</h2>
+
+        <p>Password reset link sent to:</p>
+
+        <b>{email}</b>
+
+        <br><br>
+
+        <a href="/">Back to Login</a>
+        """
+
+    return render_template("forgot_password.html")
