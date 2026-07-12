@@ -22,17 +22,15 @@ Add Asset
 <table class="table table-bordered table-hover">
 
 <thead class="table-dark">
-
 <tr>
-
-<th>Asset ID</th>
-<th>Name</th>
-<th>Category</th>
-<th>Purchase Date</th>
-<th>Status</th>
-
+    <th>Asset ID</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Purchase Date</th>
+    <th>Assigned To</th>
+    <th>Status</th>
+    <th>Action</th>
 </tr>
-
 </thead>
 
 <tbody>
@@ -41,23 +39,34 @@ Add Asset
 
 <tr>
 
-<td>{{ asset.asset_id }}</td>
-<td>{{ asset.asset_name }}</td>
-<td>{{ asset.category }}</td>
-<td>{{ asset.purchase_date }}</td>
+    <td>{{ asset.asset_id }}</td>
 
-<td>
-<span class="badge bg-success">
-{{ asset.status }}
-</span>
-</td>
+    <td>{{ asset.asset_name }}</td>
+
+    <td>{{ asset.category }}</td>
+
+    <td>{{ asset.purchase_date }}</td>
+
+    <td>{{ asset.assigned_to }}</td>
+
+    <td>
+        <span class="badge bg-success">
+            {{ asset.status }}
+        </span>
+    </td>
+
+    <td>
+        <a href="/assign_asset/{{ asset.id }}"
+           class="btn btn-warning btn-sm">
+            Assign
+        </a>
+    </td>
 
 </tr>
 
 {% endfor %}
 
 </tbody>
-
 </table>
 
 </div>

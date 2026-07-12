@@ -88,3 +88,24 @@ def add_asset():
         return redirect("/assets")
 
     return render_template("add_asset.html")
+
+
+@main.route("/assign_asset/<int:id>", methods=["GET", "POST"])
+def assign_asset(id):
+
+    asset = Asset.query.get_or_404(id)
+    employees = Employee.query.all()
+
+    if request.method == "POST":
+        asset.assigned_to = request.form["employee"]
+        asset.status = "Assigned"
+
+        db.session.commit()
+
+        return redirect("/assets")
+
+    return render_template(
+        "assign_asset.html",
+        asset=asset,
+        employees=employees
+    )
