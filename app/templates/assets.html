@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Assets</title>
+    <title>Asset Management</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -13,24 +13,28 @@
 
 <div class="container mt-5">
 
-    <h2>Asset Management</h2>
+    <h2 class="mb-4">💻 Asset Management</h2>
 
-    <a href="/add_asset" class="btn btn-primary mb-3">
-        Add Asset
+    <a href="/add_asset" class="btn btn-success mb-3">
+        ➕ Add Asset
     </a>
 
     <table class="table table-bordered table-hover">
 
         <thead class="table-dark">
+
         <tr>
             <th>Asset ID</th>
             <th>Name</th>
             <th>Category</th>
             <th>Purchase Date</th>
             <th>Assigned To</th>
+            <th>Expected Return</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Transfer</th>
+            <th>Actions</th>
         </tr>
+
         </thead>
 
         <tbody>
@@ -47,20 +51,95 @@
 
             <td>{{ asset.purchase_date }}</td>
 
-            <td>{{ asset.assigned_to }}</td>
+            <td>
+                {% if asset.assigned_to %}
+                    {{ asset.assigned_to }}
+                {% else %}
+                    -
+                {% endif %}
+            </td>
 
             <td>
-                <span class="badge bg-success">
-                    {{ asset.status }}
-                </span>
+                {% if asset.expected_return %}
+                    {{ asset.expected_return }}
+                {% else %}
+                    -
+                {% endif %}
             </td>
 
             <td>
 
-                <a href="/assign_asset/{{ asset.id }}"
-                   class="btn btn-primary btn-sm">
-                    Assign
-                </a>
+                {% if asset.status == "Available" %}
+
+                    <span class="badge bg-success">
+                        Available
+                    </span>
+
+                {% elif asset.status == "Assigned" %}
+
+                    <span class="badge bg-warning text-dark">
+                        Assigned
+                    </span>
+
+                {% elif asset.status == "Maintenance" %}
+
+                    <span class="badge bg-danger">
+                        Under Maintenance
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-secondary">
+                        {{ asset.status }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if asset.status == "Assigned" %}
+
+                    {% if asset.transfer_requested %}
+
+                        <span class="badge bg-info">
+                            Transfer Pending
+                        </span>
+
+                    {% else %}
+
+                        <a href="/transfer_asset/{{ asset.id }}"
+                           class="btn btn-warning btn-sm">
+                            🔄 Transfer
+                        </a>
+
+                    {% endif %}
+
+                {% else %}
+
+                    -
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                {% if asset.status == "Available" %}
+
+                    <a href="/assign_asset/{{ asset.id }}"
+                       class="btn btn-primary btn-sm">
+                        Assign
+                    </a>
+
+                {% else %}
+
+                    <button class="btn btn-secondary btn-sm" disabled>
+                        Assigned
+                    </button>
+
+                {% endif %}
 
                 <a href="/edit_asset/{{ asset.id }}"
                    class="btn btn-warning btn-sm">
