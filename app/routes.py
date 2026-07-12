@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, redirect, request
-from .models import Employee, Asset
+from .models import Employee, Asset, Maintenance
 from . import db
 
 main = Blueprint("main", __name__)
+
+
 
 # ---------------- Login ----------------
 
@@ -183,3 +185,32 @@ def delete_employee(id):
     db.session.commit()
 
     return redirect("/employees")
+@main.route("/maintenance")
+def maintenance():
+
+    records = Maintenance.query.all()
+
+    return render_template(
+        "maintenance.html",
+        records=records
+    )
+
+
+@main.route("/add_maintenance", methods=["GET", "POST"])
+def add_maintenance():
+
+    if request.method == "POST":
+
+        maintenance = Maintenance(
+            asset_name=request.form["asset_name"],
+            issue=request.form["issue"],
+            request_date=request.form["request_date"],
+            status="Pending"
+        )
+
+        db.session.add(maintenance)
+        db.session.commit()
+
+        return redirect("/maintenance")
+
+    return render_template("add_maintenance.html")

@@ -25,3 +25,10 @@ class Asset(db.Model):
     assigned_to = db.Column(db.String(100), default="Not Assigned")
 
     status = db.Column(db.String(30), default="Available")
+class Maintenance(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    asset_name = db.Column(db.String(100), nullable=False)
+    issue = db.Column(db.String(300), nullable=False)
+    request_date = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(30), default="Pending")
